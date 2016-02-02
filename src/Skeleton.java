@@ -22,7 +22,7 @@ public class Skeleton{
   //Cause is expected a short list the exhaustive application of the method is not costly
   public void updateAngles(){
     //traverse the list
-    for(Bone b : bones){
+    for(Bone b : frame.getChildrenWS()){
       b.updateAngle();
     }
   }

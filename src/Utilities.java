@@ -1,9 +1,11 @@
 import java.util.*;
+
 import processing.core.*;
 import remixlab.bias.event.*;
 import remixlab.dandelion.core.*;
 import remixlab.dandelion.geom.*;
 import remixlab.proscene.*;
+import smile.math.Math;
 
 public class Utilities{
 	public static class Rectangle{
@@ -102,31 +104,45 @@ public class Utilities{
 		  }
 		  return list;
 		}
-
-		public static class CustomModelFrame extends InteractiveFrame{
+		
+		public static class CustomFrame extends GenericP5Frame{
 		  PShape shape;
-		  public CustomModelFrame(Scene sc, PShape s){
+		  public CustomFrame(Scene sc, PShape s){
 		    super(sc);
 		    shape = s;
-		  }
-		  
+		  }		  
 		  public PShape shape(){
 		    return shape;
-		  }
-		  
+		  }		  
 		  public void draw(){
-		    ((Scene) scene).pg().pushMatrix();
+		    scene().pg().pushMatrix();
 		    //root.applyWorldTransformation();
-		    ((Scene) scene).applyWorldTransformation(this);
-		    ((Scene) scene).drawAxes(40);    
-		    ((Scene) scene).pg().shape(shape);    
-		    ((Scene) scene).pg().popMatrix();
-		  }
-		    
-		  @Override
-		  public void performCustomAction(DOF2Event event) {
-		      translate(screenToVec(Vec.multiply(new Vec(isEyeFrame() ? -event.dx() : event.dx(),
-		        (scene().isRightHanded() ^ isEyeFrame()) ? -event.dy() : event.dy(), 0.0f), this.translationSensitivity())));
-		  }
+		    scene().applyWorldTransformation(this);
+		    //scene().drawAxes(40);    
+		    scene().pg().shape(shape);    
+		    scene().pg().popMatrix();
+		  }		    
 		}
+		
+	  public static float[] getDistance(Vec vv, Bone b){
+		    if(b.parent == null) return new float[]{99999,9999};
+		    //is the distance btwn line formed by b and its parent and v
+	    Vec line = Vec.subtract(b.model_pos, b.parent.model_pos);
+	    Vec va = Vec.subtract(vv, b.parent.model_pos);
+	    float dot = Vec.dot(va, line);
+	    float mag = line.magnitude();
+	    float u  = dot*(float)1./(mag*mag);
+	    Vec aux = new Vec();
+	    if(u >= 0 && u <=1){
+	      aux = new Vec(b.parent.model_pos.x() + u*line.x(), b.parent.model_pos.y() + u*line.y()); 
+	      aux = Vec.subtract(aux, vv);
+	    }
+	    if(u < 0){
+	      aux = Vec.subtract(b.parent.model_pos, vv); 
+	    }
+	    if(u > 1){
+	      aux = Vec.subtract(b.model_pos, vv); 
+	    }
+	    return new float[]{u, aux.magnitude()};
+	  }
 }

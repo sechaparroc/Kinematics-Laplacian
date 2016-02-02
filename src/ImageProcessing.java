@@ -100,7 +100,7 @@ public class ImageProcessing {
 	  r_figure = new Utilities.Rectangle();
 	  r_figure.getBoundingBox(edges);  
 	  //associate the shape with the original shape frame
-	  Kinematics.original_fig = new Utilities.CustomModelFrame(Kinematics.main_scene, figure);
+	  Kinematics.original_fig = new Utilities.CustomFrame(Kinematics.main_scene, figure);
 	  Kinematics.original_fig.translate(-r_figure.getCenterX()/2,-r_figure.getCenterY()/2);
 	  Kinematics.original_fig.scale((float) 0.5);
 	}

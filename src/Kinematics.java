@@ -7,7 +7,6 @@ import java.util.*;
 //Proscene
 //Use InteractiveModelFrame and override actions
 import remixlab.proscene.*;
-import remixlab.dandelion.core.Constants.*;
 import remixlab.dandelion.geom.*;
 
 /*
@@ -43,7 +42,7 @@ public class Kinematics extends PApplet{
 	final int aux_pos_x = all_width-all_width/4;
 	final int aux_pos_y = all_height-all_height/3;
 	//Some models
-	static Utilities.CustomModelFrame original_fig;
+	static Utilities.CustomFrame original_fig;
 	
 
 	//This is gonna be a serie of tokens to manipulate
@@ -63,13 +62,15 @@ public class Kinematics extends PApplet{
 	  aux_scene.setAxesVisualHint(true);
 	  aux_scene.setGridVisualHint(true);
 	  main_scene.setRadius(50);
-	  main_scene.mouseAgent().setButtonBinding(Target.FRAME, RIGHT, DOF2Action.CUSTOM);
-	  main_scene.mouseAgent().setButtonBinding(Target.FRAME, LEFT, DOF2Action.CUSTOM);
-	  main_scene.mouseAgent().setClickBinding(Target.FRAME, LEFT, ClickAction.CUSTOM);
-	  main_scene.mouseAgent().setClickBinding(Target.FRAME, RIGHT, ClickAction.CUSTOM);
-	  main_scene.mouseAgent().setWheelBinding(Target.FRAME, DOF1Action.CUSTOM);  
-	  aux_scene.mouseAgent().setButtonBinding(Target.FRAME, RIGHT, DOF2Action.CUSTOM);
-	  aux_scene.mouseAgent().setButtonBinding(Target.FRAME,  LEFT , DOF2Action.CUSTOM);
+	  
+	  //main_scene.mouseAgent().setButtonBinding(Target.FRAME, RIGHT, DOF2Action.CUSTOM);
+	  //main_scene.mouseAgent().setButtonBinding(Target.FRAME, LEFT, DOF2Action.CUSTOM);
+	  //main_scene.mouseAgent().setClickBinding(Target.FRAME, LEFT, ClickAction.CUSTOM);
+	  //main_scene.mouseAgent().setClickBinding(Target.FRAME, RIGHT, ClickAction.CUSTOM);
+	  //main_scene.mouseAgent().setWheelBinding(Target.FRAME, DOF1Action.CUSTOM);  
+	  //aux_scene.mouseAgent().setButtonBinding(Target.FRAME, RIGHT, DOF2Action.CUSTOM);
+	  //aux_scene.mouseAgent().setButtonBinding(Target.FRAME,  LEFT , DOF2Action.CUSTOM);
+	  
 	  control_frame = new JointControl(aux_scene);
 	  ImageProcessing ip = new ImageProcessing(this);
 	  ip.setupFigure();
@@ -82,6 +83,7 @@ public class Kinematics extends PApplet{
 	  main_graphics.background(0);
 	  original_fig.draw();
 	  drawBones();
+	  IKinematics.drawAnchors(main_scene, original_fig);
 	  main_scene.endDraw();
 	  main_graphics.endDraw();    
 	 image(main_graphics, main_scene.originCorner().x(), main_scene.originCorner().y());
@@ -89,7 +91,7 @@ public class Kinematics extends PApplet{
 	    aux_graphics.beginDraw();
 	    aux_scene.beginDraw();
 	    aux_graphics.background(125, 125, 125, 125);
-	    aux_scene.drawModels();
+	    aux_scene.drawFrames();
 	    aux_scene.endDraw();
 	    aux_graphics.endDraw();    
 	    image(aux_graphics, aux_scene.originCorner().x(), aux_scene.originCorner().y());
@@ -143,6 +145,11 @@ public class Kinematics extends PApplet{
 	  }
 	}
 	boolean temp = false;
+	static boolean enable_ef = false;
+	static boolean enable_mod_ef = false;
+	static boolean enable_mod_rad = true;
+	static boolean enable_mod_w = false;
+
 	public void keyPressed(){  
 	  //if(key == 'x' || key== 'X'){
 	  //  temp = !temp;
@@ -153,19 +160,47 @@ public class Kinematics extends PApplet{
 	  if(key=='b' || key=='B'){
 	    add_bone = !add_bone;
 	    if(last_selected_bone != null){
-	      last_selected_bone.colour = color(0,255,0);
+	      last_selected_bone.selected = false;
 	    }
 	    last_selected_bone = null;
 	  }
 	  
 	  if(key == 'z' || key == 'Z'){
 	    if(last_selected_bone != null){
-	    	IKinematics.execSkinning(original_fig,last_selected_bone.skeleton.bones);
+	    	ArrayList<Bone> bones = last_selected_bone.skeleton.frame.getChildrenWS();
+	    	bones.add(0, last_selected_bone.skeleton.frame);
+	    	IKinematics.execSkinning(original_fig,bones);
 	    	System.out.println("sale");
 	    }
 	  }
 	  if(key == 'l' || key == 'L'){
 		  IKinematics.applyTransformations(original_fig);
+	  }
+	  
+	  if(key == 'l' || key == 'L'){
+		  IKinematics.applyTransformations(original_fig);
+	  }
+
+	  if(key == 'n' || key == 'N'){
+		  enable_ef = !enable_ef;
+	  }
+	  if(key == 'm' || key == 'M'){
+		  IKinematics.executeDLS();
+	  }
+	  if(key == '1'){
+		  enable_mod_ef = true;
+		  enable_mod_rad = false;
+		  enable_mod_w = false;		  
+	  }
+	  if(key == '2'){
+		  enable_mod_ef = false;
+		  enable_mod_rad = true;
+		  enable_mod_w = false;		  
+	  }
+	  if(key == '3'){
+		  enable_mod_ef = false;
+		  enable_mod_rad = false;
+		  enable_mod_w = true;		  
 	  }
 	}
 

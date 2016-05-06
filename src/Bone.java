@@ -7,8 +7,8 @@ import remixlab.dandelion.core.*;
 
 //the angle of a bone is the angle btwn the bone and its parent
 
-public class Bone extends GenericP5Frame{
-  float radiusX = 5, radiusY = 5;
+public class Bone extends InteractiveFrame{
+  float radiusX = 10, radiusY = 10;
   int colour = -1;
   boolean selected = false;
   Skeleton skeleton;
@@ -185,18 +185,6 @@ public class Bone extends GenericP5Frame{
     while(a >  PI) a -= 2*PI;
     return a;
   }
-
-  @Override
-  public boolean checkIfGrabsInput(float x, float y){
-    float thresholdX = radiusX;
-    float thresholdY = radiusY;
-    Vec proj = scene().eye().projectedCoordinatesOf(position());
-    if((Math.abs(x - proj.vec[0]) < thresholdY) && (Math.abs(y - proj.vec[1]) < thresholdY)){
-      return true;      
-    }
-    return false;
-  }
-
   
   public void performClickEvent(ClickEvent event) {
     if(Kinematics.add_bone){

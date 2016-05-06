@@ -11,7 +11,7 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/ProcessingCore"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/ProcessingCore3"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Proscene"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/SmileCore"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/OCVProscene"/>

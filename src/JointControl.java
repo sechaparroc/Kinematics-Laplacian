@@ -57,8 +57,9 @@ public class JointControl extends InteractiveFrame{
     float c_r = 15;
     p.size = c_r;     
 	PShape s = scene().pApplet().
-    		createShape(PConstants.ELLIPSE, p.position.x() - c_r*(float)(1./2.), 
-    				p.position.y() - c_r*(float)(1./2.), c_r,c_r);
+    		createShape(PConstants.ELLIPSE, 0, 0, c_r,c_r);
+	//s.translate(p.position.x() - c_r*(float)(1./2.), p.position.y() - c_r*(float)(1./2.));
+	s.translate(p.position.x(), p.position.y());
     s.fill(255,255,255);
     p.shape = s;
     return p;
@@ -83,8 +84,9 @@ public class JointControl extends InteractiveFrame{
     float rad = (float)0.;
     PShape p = scene().pApplet().createShape(PConstants.GROUP);
     for(int i = 0; i < values.length; i++){
-      PShape circ = scene().pApplet().createShape(PConstants.ELLIPSE,-main_radius + radius_step*i,
-    		  - main_radius + radius_step*i, 2*(main_radius - radius_step*i),2*(main_radius - radius_step*i));
+      PShape circ = scene().pApplet().createShape(PConstants.ELLIPSE,0,0, 2*(main_radius - radius_step*i),2*(main_radius - radius_step*i));
+      //circ.translate(-main_radius + radius_step*i,
+    	//	  - main_radius + radius_step*i);      
       circ.setFill(scene().pApplet().color((int)(Math.random()*255),
     		  (int)(Math.random()*255),(int)(Math.random()*255)));            
       p.addChild(circ);

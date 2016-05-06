@@ -50,9 +50,16 @@ public class Kinematics extends PApplet{
 	static ArrayList<Bone> bones = new ArrayList<Bone>();
 	
 	static boolean laplacian = true;
+	
+	public static void main(String[] args){
+		PApplet.main(Kinematics.class.getName());		
+	}
+	
+	public void settings(){
+	  size(600, 620, P2D);		
+	}
 
 	public void setup(){
-	  size(600, 620, P2D);
 	  main_graphics = createGraphics(all_width,all_height,P2D);
 	  main_scene = new Scene(this, main_graphics);
 	  aux_graphics = createGraphics(all_width/4,all_height/3,P2D);
@@ -77,6 +84,7 @@ public class Kinematics extends PApplet{
 	}
 
 	public void draw(){
+	  IKinematics.executeDLS();		
 	  handleAgents();  
 	  main_graphics.beginDraw();
 	  main_scene.beginDraw();
@@ -169,16 +177,15 @@ public class Kinematics extends PApplet{
 	    if(last_selected_bone != null){
 	    	ArrayList<Bone> bones = last_selected_bone.skeleton.frame.getChildrenWS();
 	    	bones.add(0, last_selected_bone.skeleton.frame);
-	    	IKinematics.execSkinning(original_fig,bones);
+	    	//IKinematics.execSkinning(original_fig,bones);
+	    	IKinematics.execSkinningLinearBlending(original_fig,bones);
 	    	System.out.println("sale");
 	    }
 	  }
-	  if(key == 'l' || key == 'L'){
-		  IKinematics.applyTransformations(original_fig);
-	  }
 	  
 	  if(key == 'l' || key == 'L'){
-		  IKinematics.applyTransformations(original_fig);
+		  //IKinematics.applyTransformations(original_fig);
+		  IKinematics.applyTransformationsLinearBlending(original_fig);		  
 	  }
 
 	  if(key == 'n' || key == 'N'){

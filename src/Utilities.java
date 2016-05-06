@@ -105,22 +105,22 @@ public class Utilities{
 		  return list;
 		}
 		
-		public static class CustomFrame extends GenericP5Frame{
-		  PShape shape;
+		public static class CustomFrame extends InteractiveFrame{
+		  PShape sh;
 		  public CustomFrame(Scene sc, PShape s){
 		    super(sc);
-		    shape = s;
+		    sh = s;
 		  }		  
-		  public PShape shape(){
-		    return shape;
+		  public PShape getShape(){
+		    return sh;
 		  }		  
 		  public void draw(){
-		    scene().pg().pushMatrix();
+		    ((Scene) scene()).pg().pushMatrix();
 		    //root.applyWorldTransformation();
 		    scene().applyWorldTransformation(this);
 		    //scene().drawAxes(40);    
-		    scene().pg().shape(shape);    
-		    scene().pg().popMatrix();
+		    ((Scene) scene()).pg().shape(sh);    
+		    ((Scene) scene()).pg().popMatrix();
 		  }		    
 		}
 		

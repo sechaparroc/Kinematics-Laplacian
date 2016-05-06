@@ -309,16 +309,19 @@ public class LaplacianDeformation {
 			//float nearest = PVector.dist(n.v, p1);
 			//float farthest = PVector.dist(f.v, p1);
 			for(Vertex v : sorted){
-				//float weight = Math.abs((farthest - PVector.dist(p1, v.v)))/Math.abs((farthest - nearest ));
+				float weight = Utilities.getDistance(new Vec (v.v.x, v.v.y), b)[1];
+				weight = 1.f/weight;
 				if(debug)System.out.println("################# <<<<<<<<<<<<<---- : d " + PVector.dist(p1, v.v));			
 				//if(debug)System.out.println("################# <<<<<<<<<<<<<---- : weight " + weight);
 				Vec initial = model.coordinatesOf(b.parent.position().get());
-				Anchor anchor = new Anchor(b, v, i, new PVector(initial.x(), initial.y()), 0);
+				Anchor anchor = new Anchor(b, v, i, new PVector(initial.x(), initial.y()), weight);
 				Anchor a = containsAnchor(this.anchors, v);
 				if(a == null){
 					anchors.add(anchor);
+					anchor.weight += weight; 
 				}else{
-					a.addAttrib(b,new PVector(initial.x(), initial.y()),0);
+					a.weight += weight;
+					a.addAttrib(b,new PVector(initial.x(), initial.y()), weight);
 				}			
 			}
 	  }	
